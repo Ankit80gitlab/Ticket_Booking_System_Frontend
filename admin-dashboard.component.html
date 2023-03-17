@@ -1,0 +1,218 @@
+
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <img id="logo" src="assets/calendar.png" alt="Avatar">
+        <h1 id="head">Ticket Booking System</h1>
+        <p style="margin-left: 930px; margin-top: 16px;">
+            <img style="cursor: pointer;" src="{{userImage}}" width="30" matTooltip="User Profile" /> {{userRole}} | <a
+                style="cursor: pointer;" (click)="logout()">LOGOUT</a>
+        </p>
+
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-drawer-container class="example-container">
+    <mat-drawer id="draw" mode="side" opened>
+        <!-- drawer content -->
+        <div id="backImg2">
+
+            <div style="text-align: center; margin-top: 10px;">User - {{userEmail}}</div>
+
+            <hr>
+            <div id="op1"><mat-icon class="ic">person_add</mat-icon><a style="cursor: pointer;" id="op11"
+                    matTooltip="Create" (click)="createAgentMethodCalled()">Create Agent</a></div>
+            <hr>
+            <div id="op2"><mat-icon class="ic">cancel</mat-icon><a style="cursor: pointer;" id="op12"
+                    matTooltip="Remove" (click)="removeAgentMethodCalled()">Remove Agent</a></div>
+            <hr>
+            <div id="op1"><mat-icon class="ic">train</mat-icon><a style="cursor: pointer;" id="op11" matTooltip="Create"
+                    (click)="getAllSeats()" (click)="getAllSeatCalled()">Current Booking</a></div>
+            <hr>
+            <div id="op2"><mat-icon class="ic">check_circle</mat-icon><a style="cursor: pointer;" id="op12"
+                    matTooltip="Remove" (click)="getAllAgentData()" (click)="getAllAgentDataCalled()">Verified Agents</a></div>
+            <hr>
+            <div id="supp">d</div>
+        </div>
+
+        <!-- drawer content -->
+    </mat-drawer>
+
+
+    <mat-drawer-content>
+        
+
+            
+
+        <!-- booking  -->
+
+        <br>
+
+        <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h2 style="margin-top: 15px;">Booking</h2>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Click here to allocate seats for agents to book
+                        <mat-icon>airline_seat_recline_normal</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <hr>
+
+
+                <mat-label style="font-weight: 500;">Enter no of rows (Columns are fixed (6) )</mat-label><br><br>
+                <div class="form-outline">
+                    <input type="number" id="typeNumber" #rows class="form-control" /><br>
+                    <label class="form-label" for="typeNumber">Only number input will be accepted (min rows 3 & max rows
+                        5)</label>
+                </div>
+                <hr>
+                <button mat-raised-button color="primary" style="margin-left: 535px;"
+                    (click)="allocateSeats(rows.value)">Allocate</button>
+
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <br>
+
+
+        <!-- cancellation  -->
+
+        <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h2 style="margin-top: 15px;">Cancellation</h2>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Click here to cancel all the bookings for this trip
+                        <mat-icon>block</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <hr>
+
+                <p style="text-align: center;">Note : All the seats booked by the agents will be cancelled and no seacts will be available to allocate</p>
+                <hr>
+
+                <button mat-raised-button color="primary" style="margin-left: 540px;"
+                    (click)="cancellingAllseats()">Cancel</button>
+
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <hr>
+
+        <h3 style="text-align: center; margin-top: 5px; text-decoration: underline;" *ngIf="allocateSeatCalled">Booking
+            has now opened. Click on current booking to check the seat status</h3>
+
+            <div id="backImg" *ngIf="createAgentCall">
+            <form (ngSubmit)="createAgent()" name="agentRegisterForm" [formGroup]="agentRegisterForm">
+                <div class="header">
+                    <h2>Creating New Agent</h2>
+                </div>
+
+                <div id="noteBox">
+                    <p>Note : Please make sure to provide correct email Id of agent. A mail will be sent to the agent
+                        along with login credentials.</p>
+                    <p>Default login password for agent : <span style="font-weight: bold;">Agent@123</span></p>
+                </div>
+
+                <div class="email-input">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Agent email id</mat-label>
+                        <input formControlName="email" matInput required>
+                        <mat-error *ngIf="agentRegisterForm.get('email')?.errors">
+                            Entered format is wrong
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <br>
+
+                <button id="logBtn" mat-flat-button color="primary" [disabled]="agentRegisterForm.invalid"
+                    matTooltip="create">Create</button>
+            </form>
+
+        </div>
+
+        <div id="backImg" *ngIf="removeAgentCall">
+
+            <form (ngSubmit)="removeAgent()" name="agentRemoveForm" [formGroup]="agentRemoveForm">
+                <div class="header">
+                    <h2>Removing Agent</h2>
+                </div>
+
+                <div id="noteBox">
+                    <p>Note : Please make sure to provide correct email Id of agent. Agent data and credentials will be
+                        removed permanently .</p>
+                    <p>to make the user agent again <span style="font-weight: bold;">go to create agent option</span>
+                    </p>
+                </div>
+
+                <div class="email-input">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Agent email id</mat-label>
+                        <input formControlName="email" matInput required>
+                        <mat-error *ngIf="agentRemoveForm.get('email')?.errors">
+                            Entered format is wrong
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <br>
+
+                <button id="logBtn" mat-flat-button color="primary" [disabled]="agentRemoveForm.invalid"
+                    matTooltip="create">Remove</button>
+            </form>
+
+        </div>
+
+        <div id="picForm" *ngIf="currentBookingCalled">
+            <h2 style="margin-left: 90px;">SEATING ARRANGMENT</h2>
+
+            <div *ngFor="let i of seatPictorialData">
+                <button style="float: left; margin-right: 10px;margin-bottom: 5px; width: 60px; height: 40px;"
+                    (click)="checkSeat(i)">{{i}}</button>
+            </div>
+
+            <hr>
+            <p style="align-content: center; margin-left: 90px; margin-top: 20px;">0th and 5th column - window seats</p>
+            <p style="align-content: center; margin-left: 90px;">&nbsp;1st and 4th column - middle seats</p>
+            <p style="align-content: center; margin-left: 90px;">&nbsp;&nbsp;2nd and 3rd column - aisle seats</p>
+            <hr>
+        </div>
+
+        <!-- agent info table -->
+
+        <table class="table" id="tabo" *ngIf="agentTableCalled">
+            <thead>
+                <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">Bookings</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let h of allAgentDataArray">
+                    <th scope="row">{{h.email}}</th>
+                    <td><a style="cursor: pointer;" (click)="fetchingAgentSeats(h.email,h.role)">Click here</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <div style="margin-left: 700px; margin-top: -320px; position: fixed;">
+            <div>
+                <mat-card-title>{{cAgentEmail| uppercase}}</mat-card-title><br>
+                <mat-card-subtitle>{{cRole | uppercase}} {{BookedSeats}} {{totalSeatBookedAgentNo}}</mat-card-subtitle>
+            </div><br>
+            <div id="work" style="width: 423px;"></div>
+        </div>
+
+        <!-- <button (click)="removingAllAgentBooking()">remove all agent data</button> -->
+
+        <div id="support">s</div>
+
+    </mat-drawer-content>
+
+    <router-outlet></router-outlet>

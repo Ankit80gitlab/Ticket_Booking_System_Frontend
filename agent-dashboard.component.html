@@ -1,0 +1,376 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <img id="logo" src="assets/calendar.png" alt="Avatar">
+        <h1 id="head">Ticket Booking System</h1>
+        <p style="margin-left: 930px; margin-top: 16px;">
+            <img style="cursor: pointer;" src="{{userImage}}" width="30" matTooltip="User Profile" /> {{userRole}} | <a
+                style="cursor: pointer;" (click)="logout()">LOGOUT</a>
+        </p>
+
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-drawer-container class="example-container">
+    <mat-drawer id="draw" mode="side" opened>
+        <!-- drawer content -->
+        <div *ngIf="agentNotLoginfirstTime">
+            <div id="backImg2">
+
+                <div style="text-align: center; margin-top: 10px; margin-left: 10px;margin-right: 10px;">User -
+                    {{userEmail}}</div>
+
+                <!-- <div id="op1"><mat-icon class="ic">person</mat-icon><a id="op11" matTooltip="book tickets">Booking
+                        Window</a>
+                </div>
+                <hr>
+                <div id="op2"><mat-icon class="ic">person_add</mat-icon><a id="op12"
+                        matTooltip="previous bookings">Previous Bookings</a></div>
+                <hr>
+                <div id="op2"><mat-icon class="ic">person_add</mat-icon><a id="op12" matTooltip="next bookings">Upcoming
+                        Bookings</a></div> -->
+                <hr>
+
+                <div id="supp">d</div>
+            </div>
+        </div>
+
+        <!-- drawer content -->
+    </mat-drawer>
+
+
+    <mat-drawer-content>
+        <div id="backImg">
+
+            <div *ngIf="agentLoginfirstTime">
+
+                <mat-spinner *ngIf="spinner" style="position: fixed;"></mat-spinner>
+                <form [formGroup]="agentProfileUpdateForm" (ngSubmit)="agentProfileUpdate()">
+
+                    <div id="noteBox">
+                        <h3>Note : Looks like you are logging in for the first time. For security purpose you need to
+                            <br><span style="font-weight: bold;">change your password</span>
+                        </h3>
+                        <p>In case if you forgot your password, write to : <span
+                                style="font-weight: bold;">admin@gmail.com</span></p>
+                    </div>
+
+                    <div class="header">
+                        <h2>PROFILE UPDATE FORM</h2>
+                    </div>
+
+                    <mat-form-field id="gh" class="width" appearance="outline">
+                        <mat-label>Address</mat-label>
+                        <input matInput placeholder="Address" formControlName="address" />
+                        <mat-hint
+                            *ngIf="agentProfileUpdateForm.get('userName')?.hasError('required') && (agentProfileUpdateForm.get('userName')?.dirty || agentProfileUpdateForm.get('userName')?.touched)">
+                            Address is Mandatory</mat-hint>
+                        <mat-hint *ngIf="agentProfileUpdateForm.get('userName')?.hasError('maxlength')">Maximum limit is
+                            15 charactors.
+                        </mat-hint>
+                    </mat-form-field> <br>
+
+
+
+                    <mat-form-field id="gh" class="width" appearance="outline">
+                        <mat-label>Mobile No.</mat-label>
+                        <input matInput placeholder="Mobile" formControlName="phoneNo" />
+                        <mat-hint align="end"
+                            *ngIf="agentProfileUpdateForm.get('phoneNo')?.hasError('required') && (agentProfileUpdateForm.get('phoneNo')?.dirty || agentProfileUpdateForm.get('phoneNo')?.touched)">
+                            Mobile Number is Mandatory</mat-hint>
+                        <mat-hint align="end" *ngIf="agentProfileUpdateForm.get('phoneNo')?.hasError('pattern')">Please
+                            enter 10 digit
+                            Mobile Number
+                        </mat-hint>
+                    </mat-form-field>
+                    <br />
+
+                    <mat-form-field id="gh" class="width" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput placeholder="Password" type="password" formControlName="password" />
+                        <mat-hint align="end"
+                            *ngIf="agentProfileUpdateForm.get('password')?.hasError('required') && (agentProfileUpdateForm.get('password')?.dirty || agentProfileUpdateForm.get('password')?.touched)">
+                            Password is Mandatory</mat-hint>
+                        <mat-hint align="end"
+                            *ngIf="agentProfileUpdateForm.get('password')?.hasError('passwordValidate')">Password
+                            criteria
+                            error
+                        </mat-hint>
+                    </mat-form-field>
+                    <br />
+
+
+                    <mat-form-field id="gh" class="width" appearance="outline">
+                        <mat-label>Confirm Password</mat-label>
+                        <input matInput placeholder="Password" type="password" formControlName="confirmPassword" />
+                        <mat-hint align="end"
+                            *ngIf="agentProfileUpdateForm.get('confirmPassword')?.hasError('required') && (agentProfileUpdateForm.get('confirmPassword')?.dirty || agentProfileUpdateForm.get('confirmPassword')?.touched)">
+                            Password is Mandatory</mat-hint>
+                        <mat-hint align="end"
+                            *ngIf="agentProfileUpdateForm.get('confirmPassword')?.hasError('MustMatch')">Password didn't
+                            match
+                        </mat-hint>
+                    </mat-form-field>
+                    <br />
+
+
+                    <mat-form-field id="gh" class="width" appearance="fill">
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [max]="maxDate" [matDatepicker]="picker" formControlName="dateOfBirth">
+                        <mat-hint align="end"
+                            *ngIf="agentProfileUpdateForm.get('dateOfBirth')?.hasError('required') && (agentProfileUpdateForm.get('dateOfBirth')?.dirty ||agentProfileUpdateForm.get('dateOfBirth')?.touched)">
+                            Date of Birth is Mandatory</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <br><br>
+
+                    <div *ngFor="let i of images">
+                        <button type="button" id="userImg" (click)="addUserImage(i)"><img [src]="i" alt="The Image"
+                                height="50" /></button>
+                    </div>
+                    <br><br><br><br><br>
+                    <button id="signBtn" type="submit" mat-raised-button color="primary"
+                        [disabled]="agentProfileUpdateForm.invalid" matTooltip="register yourself">Update</button><br>
+
+                </form>
+            </div>
+        </div>
+
+        <div *ngIf="agentNotLoginfirstTime">
+
+
+            <br>
+            <mat-chip-listbox aria-label="Fish selection" style="margin-left: 350px;">
+                <mat-chip-option (click)="bookingFormCalling()">Booking Window</mat-chip-option>
+                <mat-chip-option (click)="previousBookingCalling()" (click)="previousBookings()">Previous
+                    Bookings</mat-chip-option>
+                <mat-chip-option (click)="upcomingBookingCalling()">Upcoming Bookings</mat-chip-option>
+                <mat-chip-option (click)="contactAdminCalling()">Contact Admin</mat-chip-option>
+            </mat-chip-listbox>
+
+            <hr><br>
+            <p id="anim" style="margin-left: 330px;">realtime booking status window</p><br>
+
+            <div id="work" style="width: 600px;margin-left: 340px;"></div>
+
+
+            <br>
+
+
+            <button style="margin-left: 500px;" mat-raised-button color="primary" (click)="liveUpdate()">Click here to
+                refresh live updates</button>
+
+            <p style="align-content: center; margin-left: 530px; margin-top: 20px;">1st and 6th column - window seats
+            </p>
+            <p style="align-content: center; margin-left: 530px;">&nbsp;2nd and 5th column - middle seats</p>
+            <p style="align-content: center; margin-left: 530px;">&nbsp;&nbsp;3rd and 4th column - aisle seats</p>
+
+
+            <!-- <div *ngFor="let i of seatPictorialData"
+                style="width: 600px; font-size: large;font-family:-apple-system;margin-left: 370px;">
+                <button style="float: left; margin-right: 15px;margin-bottom: 10px; width: 80px; height: 50px;"
+                    (click)="checkSeat(i)">{{i}}</button>
+            </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+            <hr>
+
+
+
+
+            <div id="bookingForm" *ngIf="bookingFormCalled">
+
+                <br>
+                <p id="anim" style="font-size: small;margin-left: 290px;">Note : only one tickets can be booked at a
+                    time</p>
+                <h1 style="font-family: 'Trebuchet MS'; margin-left: 450px;">TICKET BOOKING FORM</h1>
+                <br>
+
+                <h3>Enter Passenger 1 Details</h3>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input #n1 matInput>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Address</mat-label>
+                    <input matInput #add1 placeholder="Ex.18th street, Mumbai">
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Age</mat-label>
+                    <input matInput #a1 #postalCode maxlength="2">
+                    <mat-hint align="end">{{postalCode.value.length}} / 2</mat-hint></mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Gender (M/F)</mat-label>
+                    <input matInput #g1 #postalCode maxlength="1">
+                    <mat-hint align="end">{{postalCode.value.length}} / 1</mat-hint></mat-form-field>
+
+
+                <br>
+
+                <!-- <h3>Enter Passenger 2 Details</h3>
+            <mat-form-field class="example-full-width">
+                <mat-label>Name</mat-label>
+                <input #n2 matInput>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Address</mat-label>
+                <input #add2 matInput placeholder="Ex.18th street, Mumbai">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+            <mat-label>Age</mat-label>
+            <input matInput #a2 #postalCode maxlength="2">
+            <mat-hint align="end">{{postalCode.value.length}} / 2</mat-hint></mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Gender (M/F)</mat-label>
+                <input matInput #g2 #postalCode maxlength="1">
+                <mat-hint align="end">{{postalCode.value.length}} / 1</mat-hint></mat-form-field> -->
+
+                <!-- <br>
+
+            <h3>Enter Passenger 3 Details</h3>
+            <mat-form-field class="example-full-width">
+                <mat-label>Name</mat-label>
+                <input matInput #n3>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Address</mat-label>
+                <input matInput #add3 placeholder="Ex.18th street, Mumbai">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+            <mat-label>Age</mat-label>
+            <input matInput #a3 #postalCode maxlength="2">
+            <mat-hint align="end">{{postalCode.value.length}} / 2</mat-hint></mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Gender (M/F)</mat-label>
+                <input matInput #g3 #postalCode maxlength="1">
+                <mat-hint align="end">{{postalCode.value.length}} / 1</mat-hint></mat-form-field> -->
+
+                <br><br>
+                <button style="margin-left: 450px;" mat-raised-button color="primary" (click)="getTicketFormData(n1.value,
+            add1.value,a1.value,g1.value)">Process Booking</button><br><br><br>
+
+            </div>
+
+            <div style="border: 1px solid black; text-align: center;" *ngIf="seatBookingConfirmation">
+                <h2>Congratulations! Ticket has been successfully booked</h2>
+                <h3>{{ticketBookingMessage1}}</h3>
+                <h3>{{ticketBookingMessage2}}</h3>
+                <h3>{{ticketBookingMessage3}}</h3>
+            </div>
+
+            <div *ngIf="previousBookingCalled">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let h of previousBookingData">
+                            <th scope="row">{{h.name}}</th>
+                            <td>{{h.address}}</td>
+                            <td>{{h.age}}</td>
+                            <td>{{h.gender}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+            </div>
+
+            <div *ngIf="upcomingBookingCalled">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">S. No.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Rajiv Sharma</td>
+                            <td>32 Blue Street</td>
+                            <td>45</td>
+                            <td>M</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Sanjeevani Gupta</td>
+                            <td>Royal Meadow 7</td>
+                            <td>26</td>
+                            <td>F</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Jatin Jain</td>
+                            <td>New Street 18</td>
+                            <td>65</td>
+                            <td>M</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>Somya K</td>
+                            <td>Rk Sector 3</td>
+                            <td>62</td>
+                            <td>F</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div *ngIf="contactAdminCalled" style="margin-left:450px ;">
+                <p id="anim" style="font-size: small;margin-left: -60px;">We would be happy to have your valuable
+                    feedback</p>
+                <br>
+                <mat-form-field class="example-full-width" style="width: 400px;">
+                    <mat-label>More function can be added...</mat-label>
+                    <textarea matInput #msg placeholder="Ex. It makes me feel..."></textarea>
+                </mat-form-field><br>
+
+                <button style="margin-left: 160px;" (click)="sendingMessageToAdmin(msg.value)" mat-raised-button
+                    color="primary">Submit</button>
+            </div>
+
+            <!-- <button (click)="previousBookings()">pre book</button> -->
+
+            <!-- <input type="number" #seatNoI>
+        <button (click)="bookSeat(seatNoI.value)">book seat</button>
+
+        <br>
+        <button>get all booked seats</button><br>
+        <button (click)="getAllAvailSeats()">get all avil seats</button>
+        <br><br>
+
+        <input type="number" #d>
+        <button>click to assign</button> -->
+
+
+
+
+
+
+            <!-- end of ngIF -->
+
+        </div>
+
+        <div id="support">s</div>
+
+    </mat-drawer-content>
+
+    <router-outlet></router-outlet>
