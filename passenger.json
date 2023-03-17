@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "name": "Rekha Jain",
+      "address": "45 B Veena nagar",
+      "age": "45",
+      "gender": "F"
+    },
+    {
+      "name": "Subham Thakur",
+      "address": "delhi",
+      "age": "14",
+      "gender": "M"
+    },
+    {
+      "name": "Ram Tivari",
+      "address": "45 triveni",
+      "age": "32",
+      "gender": "M"
+    },
+    {
+      "name": "Santosh K",
+      "address": "B41 Noida",
+      "age": "36",
+      "gender": "M"
+    },
+    {
+      "name": "jayesh sundar",
+      "address": "Allhabad",
+      "age": "25",
+      "gender": "M"
+    },
+    {
+      "name": "Karina S",
+      "address": "74 vihar",
+      "age": "36",
+      "gender": "F"
+    }
+  ]
+}
